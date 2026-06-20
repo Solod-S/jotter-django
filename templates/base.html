@@ -1,0 +1,47 @@
+<!-- prettier-ignore -->
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Jotter{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/tokens.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <header class="top-bar">
+      <a href="{% url 'notes:index' %}" class="top-bar__brand">Jotter</a>
+      <nav class="top-bar__nav" aria-label="Main navigation">
+        <a href="{% url 'notes:about' %}" class="nav-link">About</a>
+        <a
+          href="{% url 'admin:index' %}"
+          class="nav-link"
+          target="_blank"
+          rel="noopener"
+          >Admin</a
+        >
+      </nav>
+    </header>
+
+    <main id="main-content" class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

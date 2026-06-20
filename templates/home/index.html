@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Jotter — Notes App{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">Jotter</h1>
+  <p class="page-subtitle">Your personal notes app. Capture ideas, stay organized.</p>
+
+  <section class="empty-state" aria-labelledby="empty-heading">
+    <span class="empty-state__icon" aria-hidden="true">&#10022;</span>
+    <h2 class="empty-state__heading" id="empty-heading">No notes yet</h2>
+    <p class="empty-state__text">Create your first note and start capturing your thoughts.</p>
+    <a href="#" class="btn btn--primary">New Note</a>
+  </section>
+{% endblock %}

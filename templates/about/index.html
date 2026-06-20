@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About — Jotter{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/about.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">About Jotter</h1>
+
+  <section class="about-section">
+    <h2 class="about-section__heading">What is Jotter?</h2>
+    <p class="about-section__text">Jotter is a simple notes application built with Django. It helps you capture ideas and stay organized without distraction.</p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-section__heading">Our philosophy</h2>
+    <p class="about-section__text">The interface gets out of your way. No clutter, no noise — just a clean writing surface where your thoughts come first.</p>
+  </section>
+{% endblock %}

@@ -1,0 +1,81 @@
+/* ============================================================
+   Design Tokens — Jotter
+   Colors in OKLCH. Strategy: Restrained — pure white surface,
+   single indigo primary, teal accent for status and links.
+   ============================================================ */
+
+:root {
+  /* ---- Base surfaces ---- */
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.97 0.004 230);
+  --surface-elevated: oklch(0.985 0.002 230);
+
+  /* ---- Text ---- */
+  --ink: oklch(0.18 0.006 230);
+  --ink-secondary: oklch(0.46 0.006 230);
+  --ink-tertiary: oklch(0.67 0.004 230);
+  --ink-on-primary: oklch(1 0 0);
+  --ink-on-accent: oklch(1 0 0);
+
+  /* ---- Brand ---- */
+  --primary: oklch(0.57 0.145 230);
+  --primary-hover: oklch(0.52 0.155 230);
+  --primary-active: oklch(0.47 0.15 230);
+  --primary-muted: oklch(0.94 0.02 230);
+
+  /* ---- Accent ---- */
+  --accent: oklch(0.68 0.135 175);
+  --accent-hover: oklch(0.63 0.145 175);
+  --accent-muted: oklch(0.94 0.025 175);
+
+  /* ---- Semantic ---- */
+  --success: oklch(0.62 0.15 160);
+  --success-muted: oklch(0.94 0.04 160);
+  --warning: oklch(0.72 0.15 85);
+  --warning-muted: oklch(0.95 0.06 85);
+  --error: oklch(0.52 0.18 25);
+  --error-muted: oklch(0.94 0.04 25);
+
+  /* ---- Borders & Dividers ---- */
+  --border: oklch(0.91 0.004 230);
+  --border-strong: oklch(0.85 0.006 230);
+
+  /* ---- Focus ---- */
+  --ring: oklch(0.57 0.145 230 / 50%);
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 2px oklch(0.18 0.006 230 / 6%);
+  --shadow-md: 0 4px 12px oklch(0.18 0.006 230 / 8%);
+  --shadow-lg: 0 8px 24px oklch(0.18 0.006 230 / 10%);
+
+  /* ---- Typography ---- */
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", "Consolas",
+    "Liberation Mono", monospace;
+
+  /* ---- Type scale (fixed rem) ---- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+
+  /* ---- Spacing (base 4px) ---- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+}

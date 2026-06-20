@@ -1,0 +1,2 @@
+# Ignore Django templates - Prettier breaks Django template tags
+templates/
