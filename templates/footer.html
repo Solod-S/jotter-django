@@ -1,5 +1,13 @@
-<footer>
-  <div>
-    <p>&copy; {% now "Y" %} Jotter. All rights reserved.</p>
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__tagline">A distraction-free space for your thoughts.</p>
+
+    <nav class="footer__links" aria-label="Footer navigation">
+      <a href="{% url 'notes:index' %}" class="footer__link">Home</a>
+      <a href="{% url 'notes:about' %}" class="footer__link">About</a>
+      <a href="{% url 'admin:index' %}" class="footer__link" target="_blank" rel="noopener">Admin</a>
+    </nav>
+
+    <p class="footer__copy">&copy; {% now "Y" %} Jotter</p>
   </div>
 </footer>

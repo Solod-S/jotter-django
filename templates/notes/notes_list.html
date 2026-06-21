@@ -1,0 +1,51 @@
+<!-- prettier-ignore -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notes — Jotter{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="note-list__header">
+  <h1 class="page-title">Notes</h1>
+  <a href="{% url 'notes:note_create' %}" class="btn btn--primary">New note</a>
+</div>
+
+{% if notes %}
+<div class="note-list">
+  {% for note in notes %}
+  <article class="note-card">
+    <a href="{% url 'notes:note_detail' note.pk %}">
+      <div class="note-card__header">
+        <h2 class="note-card__title{% if not note.title %} note-card__title--untitled{% endif %}">
+          {{ note.title|default:"Untitled" }}
+        </h2>
+        <span class="note-card__date">{{ note.get_status_display }}</span>
+      </div>
+      <p class="note-card__preview">{{ note.content|truncatechars:200 }}</p>
+      {% if note.tags.exists %}
+      <div class="note-card__meta">
+        {% for tag in note.tags.all|slice:":3" %}
+        <span class="note-card__tag">{{ tag.name }}</span>
+        {% endfor %}
+        {% if note.tags.count > 3 %}
+        <span class="note-card__tag">+{{ note.tags.count|add:"-3" }}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+    </a>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <span class="empty-state__icon" aria-hidden="true">&#10025;</span>
+  <h2 class="empty-state__heading">No notes yet</h2>
+  <p class="empty-state__text">Create your first note to get started.</p>
+  <a href="{% url 'notes:note_create' %}" class="btn btn--primary">Create your first note</a>
+</div>
+{% endif %}
+{% endblock %}

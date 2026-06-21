@@ -27,6 +27,7 @@
     <header class="top-bar">
       <a href="{% url 'notes:index' %}" class="top-bar__brand">Jotter</a>
       <nav class="top-bar__nav" aria-label="Main navigation">
+        <a href="{% url 'notes:notes_list' %}" class="nav-link">Notes</a>
         <a href="{% url 'notes:about' %}" class="nav-link">About</a>
         <a
           href="{% url 'admin:index' %}"
@@ -41,6 +42,8 @@
     <main id="main-content" class="main-content">
       {% block content %}{% endblock %}
     </main>
+
+    {% include "footer.html" %}
 
     {% block extra_js %}{% endblock %}
   </body>
