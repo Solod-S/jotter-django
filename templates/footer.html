@@ -5,7 +5,10 @@
     <nav class="footer__links" aria-label="Footer navigation">
       <a href="{% url 'notes:index' %}" class="footer__link">Home</a>
       <a href="{% url 'notes:about' %}" class="footer__link">About</a>
-      <a href="{% url 'admin:index' %}" class="footer__link" target="_blank" rel="noopener">Admin</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'notes:notes_list' %}" class="footer__link">Notes</a>
+      {% endif %}
+      <a href="{% url 'admin:index' %}" class="footer__link" target="_blank" rel="noopener" hidden>Admin</a>
     </nav>
 
     <p class="footer__copy">&copy; {% now "Y" %} Jotter</p>

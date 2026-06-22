@@ -1,6 +1,6 @@
 /* ============================================================
    Base Styles — Jotter
-   App shell, top bar, reusable components.
+   App shell, top bar, drawer, reusable components.
    ============================================================ */
 
 /* ---- Document ---- */
@@ -16,6 +16,7 @@ body {
   font-size: var(--text-base);
   color: var(--ink);
   background: var(--bg);
+  overflow-x: hidden;
 }
 
 /* ---- Skip link ---- */
@@ -35,18 +36,26 @@ body {
   top: var(--space-2);
 }
 
-/* ---- Top bar ---- */
+/* ============================================================
+   Top bar
+   ============================================================ */
 .top-bar {
   position: sticky;
   top: 0;
   z-index: 100;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--space-4);
   height: 56px;
   padding: 0 var(--space-6);
   background: var(--bg);
   border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 639px) {
+  .top-bar {
+    padding: 0 var(--space-4);
+  }
 }
 
 .top-bar__brand {
@@ -54,16 +63,49 @@ body {
   font-weight: 600;
   color: var(--ink);
   transition: color 150ms ease-out;
+  flex-shrink: 0;
 }
 
 .top-bar__brand:hover {
   color: var(--primary);
 }
 
+/* ---- Desktop nav (hidden on mobile) ---- */
 .top-bar__nav {
-  display: flex;
+  display: none;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+@media (min-width: 640px) {
+  .top-bar__nav {
+    display: flex;
+  }
+}
+
+/* ---- Desktop auth actions (hidden on mobile) ---- */
+.top-bar__actions {
+  display: none;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .top-bar__actions {
+    display: flex;
+  }
+}
+
+.top-bar__user {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink-secondary);
+}
+
+.top-bar__logout-form {
+  display: flex;
 }
 
 /* ---- Navigation link ---- */
@@ -83,14 +125,255 @@ body {
   background: var(--surface);
 }
 
+.nav-link.is-active {
+  color: var(--ink);
+  background: var(--primary-muted);
+}
+
 .nav-link:focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: 2px;
 }
 
-/* ---- Button component ---- */
+/* ============================================================
+   Burger button (mobile only)
+   ============================================================ */
+.burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 150ms ease-out;
+  flex-shrink: 0;
+}
 
-/* Primary */
+@media (min-width: 640px) {
+  .burger {
+    display: none;
+  }
+}
+
+.burger:hover {
+  background: var(--surface);
+}
+
+.burger:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.burger__line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition:
+    transform 250ms ease-out,
+    opacity 250ms ease-out;
+}
+
+/* Active state: cross */
+.burger.is-open .burger__line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.burger.is-open .burger__line:nth-child(2) {
+  opacity: 0;
+}
+
+.burger.is-open .burger__line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ============================================================
+   Mobile drawer
+   ============================================================ */
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    visibility 0ms linear 250ms,
+    opacity 200ms ease-out;
+}
+
+.drawer.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    visibility 0ms linear 0ms,
+    opacity 200ms ease-out;
+}
+
+@media (min-width: 640px) {
+  .drawer {
+    display: none;
+  }
+}
+
+.drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: oklch(0 0 0 / 30%);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.drawer.is-open .drawer__backdrop {
+  opacity: 1;
+}
+
+.drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 85vw;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  transform: translateX(100%);
+  transition: transform 250ms ease-out;
+  box-shadow: var(--shadow-lg);
+}
+
+.drawer.is-open .drawer__panel {
+  transform: translateX(0);
+}
+
+.drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.drawer__brand {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.drawer__close {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.drawer__close:hover {
+  background: var(--surface);
+}
+
+.drawer__close:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.drawer__close-line {
+  position: absolute;
+  top: 19px;
+  left: 10px;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.drawer__close-line:first-child {
+  transform: rotate(45deg);
+}
+
+.drawer__close-line:last-child {
+  transform: rotate(-45deg);
+}
+
+.drawer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.drawer__link {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--ink);
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  transition:
+    color 150ms ease-out,
+    background 150ms ease-out;
+}
+
+.drawer__link:hover {
+  color: var(--primary);
+  background: var(--surface);
+}
+
+.drawer__link.is-active {
+  color: var(--ink);
+  background: var(--primary-muted);
+}
+
+.drawer__link:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.drawer__divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-6) 0;
+}
+
+.drawer__auth {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.drawer__user {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink-secondary);
+  padding: 0 var(--space-4);
+}
+
+.drawer__logout {
+  width: 100%;
+}
+
+.drawer__auth-btn {
+  width: 100%;
+}
+
+/* ============================================================
+   Button component
+   ============================================================ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -98,6 +381,7 @@ body {
   height: 40px;
   min-width: 80px;
   padding: var(--space-2) var(--space-4);
+  font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 500;
   border: none;
@@ -107,8 +391,18 @@ body {
     background 150ms ease-out,
     box-shadow 150ms ease-out;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
+/* Small variant */
+.btn--sm {
+  height: 36px;
+  min-width: 0;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-sm);
+}
+
+/* Primary */
 .btn--primary {
   background: var(--primary);
   color: var(--ink-on-primary);
@@ -119,6 +413,10 @@ body {
 }
 
 .btn--primary:active {
+  background: var(--primary-active);
+}
+
+.btn--primary.is-active {
   background: var(--primary-active);
 }
 
@@ -136,6 +434,12 @@ body {
 
 .btn--secondary:hover {
   background: var(--surface);
+}
+
+.btn--secondary.is-active {
+  background: var(--primary-muted);
+  border-color: var(--primary);
+  color: var(--ink);
 }
 
 .btn--secondary:focus-visible {
@@ -179,7 +483,9 @@ body {
   outline-offset: 2px;
 }
 
-/* ---- Main content ---- */
+/* ============================================================
+   Main content
+   ============================================================ */
 .main-content {
   flex: 1 0 auto;
   max-width: 48rem;
@@ -220,29 +526,35 @@ body {
   margin-bottom: var(--space-3);
 }
 
-/* ---- Footer ---- */
+/* ============================================================
+   Footer
+   ============================================================ */
 .footer {
-  padding: var(--space-10) var(--space-6) var(--space-8);
-  text-align: center;
+  padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--border);
 }
 
 .footer__inner {
   max-width: 48rem;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
 }
 
 .footer__tagline {
   font-size: var(--text-sm);
   color: var(--ink-tertiary);
-  margin-bottom: var(--space-4);
+  margin: 0;
 }
 
 .footer__links {
   display: flex;
   justify-content: center;
-  gap: var(--space-6);
-  margin-bottom: var(--space-4);
+  gap: var(--space-4);
+  margin: 0;
 }
 
 .footer__link {
@@ -265,6 +577,21 @@ body {
 .footer__copy {
   font-size: var(--text-xs);
   color: var(--ink-tertiary);
+}
+
+@media (max-width: 639px) {
+  .footer {
+    padding: var(--space-4);
+  }
+
+  .footer__inner {
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .footer__tagline {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* ---- Utility: sr-only ---- */

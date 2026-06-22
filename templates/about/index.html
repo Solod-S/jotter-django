@@ -1,22 +1,55 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About — Jotter{% endblock %}
+{% block title %}About - Jotter{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/about.css' %}" />
 {% endblock %}
 
 {% block content %}
-  <h1 class="page-title">About Jotter</h1>
+  <article class="about-page">
+    <header class="about-intro">
+      <p class="about-intro__label">Jotter</p>
+      <h1 class="page-title">A quiet place for notes.</h1>
+      <p class="page-subtitle">
+        Jotter is a focused Django notes app for capturing thoughts, drafts, and small ideas without extra interface noise.
+      </p>
+    </header>
 
-  <section class="about-section">
-    <h2 class="about-section__heading">What is Jotter?</h2>
-    <p class="about-section__text">Jotter is a simple notes application built with Django. It helps you capture ideas and stay organized without distraction.</p>
-  </section>
+    <section class="about-section" aria-labelledby="about-purpose">
+      <h2 class="about-section__heading" id="about-purpose">What it is</h2>
+      <p class="about-section__text">
+        The app keeps the basics close: create a note, read it later, edit what changed, and move on. The interface stays simple so the note remains the main thing on the screen.
+      </p>
+    </section>
 
-  <section class="about-section">
-    <h2 class="about-section__heading">Our philosophy</h2>
-    <p class="about-section__text">The interface gets out of your way. No clutter, no noise — just a clean writing surface where your thoughts come first.</p>
-  </section>
+    <section class="about-principles" aria-labelledby="about-principles">
+      <h2 class="about-section__heading" id="about-principles">Design principles</h2>
+      <div class="about-principles__list">
+        <div class="about-principle">
+          <h3 class="about-principle__title">Fast capture</h3>
+          <p class="about-principle__text">Opening a blank note should feel immediate, with no setup before writing.</p>
+        </div>
+        <div class="about-principle">
+          <h3 class="about-principle__title">Readable by default</h3>
+          <p class="about-principle__text">Clear type, calm spacing, and strong contrast make notes easy to scan and revisit.</p>
+        </div>
+        <div class="about-principle">
+          <h3 class="about-principle__title">Minimal chrome</h3>
+          <p class="about-principle__text">Navigation and controls are present when needed, then get out of the way.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-workflow" aria-labelledby="about-workflow">
+      <div>
+        <h2 class="about-section__heading" id="about-workflow">How it fits</h2>
+        <p class="about-section__text">
+          Use it for short captures, study notes, planning fragments, or longer drafts. Jotter is intentionally text-first and avoids features that slow down writing.
+        </p>
+      </div>
+      <a href="{% url 'notes:index' %}" class="about-workflow__link">Back to notes</a>
+    </section>
+  </article>
 {% endblock %}

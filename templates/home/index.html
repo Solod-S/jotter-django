@@ -1,20 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Jotter — Notes App{% endblock %}
+{% block title %}Jotter - Notes app{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 {% endblock %}
 
 {% block content %}
-  <h1 class="page-title">Jotter</h1>
-  <p class="page-subtitle">Your personal notes app. Capture ideas, stay organized.</p>
+  <article class="home-page">
+    {% if user.is_authenticated %}
+      <header class="home-intro">
+        <div>
+          <p class="home-intro__label">Signed in as {{ user.username }}</p>
+          <h1 class="page-title">Your notes, ready when you are.</h1>
+          <p class="page-subtitle">
+            Capture a thought, return to a draft, or scan what you wrote last.
+          </p>
+        </div>
+        <a href="{% url 'notes:note_create' %}" class="btn btn--primary home-intro__action">New note</a>
+      </header>
 
-  <section class="empty-state" aria-labelledby="empty-heading">
-    <span class="empty-state__icon" aria-hidden="true">&#10022;</span>
-    <h2 class="empty-state__heading" id="empty-heading">No notes yet</h2>
-    <p class="empty-state__text">Create your first note and start capturing your thoughts.</p>
-    <a href="#" class="btn btn--primary">New Note</a>
-  </section>
+      <section class="home-section" aria-labelledby="home-recent-heading">
+        <div class="home-section__header">
+          <div>
+            <h2 class="home-section__title" id="home-recent-heading">Recent notes</h2>
+            <p class="home-section__meta">{{ notes_count }} note{{ notes_count|pluralize }} in your workspace</p>
+          </div>
+          <a href="{% url 'notes:notes_list' %}" class="home-section__link">View all</a>
+        </div>
+
+        {% if recent_notes %}
+          <div class="home-note-list">
+            {% for note in recent_notes %}
+              <article class="home-note">
+                <a href="{% url 'notes:note_detail' note.pk %}" class="home-note__link">
+                  <div class="home-note__header">
+                    <h3 class="home-note__title">{{ note.title|default:"Untitled" }}</h3>
+                    <span class="home-note__status">{{ note.get_status_display }}</span>
+                  </div>
+                  <p class="home-note__preview">{{ note.content|truncatechars:160 }}</p>
+                </a>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="home-empty">
+            <span class="home-empty__icon" aria-hidden="true">&#10025;</span>
+            <h2 class="home-empty__title">No notes yet</h2>
+            <p class="home-empty__text">Create your first note and keep it close for later.</p>
+            <a href="{% url 'notes:note_create' %}" class="btn btn--primary">Create your first note</a>
+          </div>
+        {% endif %}
+      </section>
+    {% else %}
+      <header class="home-intro home-intro--guest">
+        <p class="home-intro__label">Jotter</p>
+        <h1 class="page-title">A quiet place for your notes.</h1>
+        <p class="page-subtitle">
+          Sign in to keep personal notes, drafts, and ideas organized in one focused workspace.
+        </p>
+        <div class="home-actions" aria-label="Account actions">
+          <a href="{% url 'login' %}" class="btn btn--primary">Log in</a>
+          <a href="{% url 'signup' %}" class="btn btn--secondary">Sign up</a>
+        </div>
+      </header>
+
+      <section class="home-section" aria-labelledby="home-guest-heading">
+        <h2 class="home-section__title" id="home-guest-heading">Built for quick capture</h2>
+        <div class="home-feature-list">
+          <div class="home-feature">
+            <h3 class="home-feature__title">Write without setup</h3>
+            <p class="home-feature__text">Open the app, create a note, and start typing.</p>
+          </div>
+          <div class="home-feature">
+            <h3 class="home-feature__title">Return to what matters</h3>
+            <p class="home-feature__text">Keep drafts and ideas easy to scan when you come back.</p>
+          </div>
+          <div class="home-feature">
+            <h3 class="home-feature__title">Stay focused</h3>
+            <p class="home-feature__text">The interface stays light so your content stays first.</p>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+  </article>
 {% endblock %}

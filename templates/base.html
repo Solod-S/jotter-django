@@ -26,18 +26,151 @@
 
     <header class="top-bar">
       <a href="{% url 'notes:index' %}" class="top-bar__brand">Jotter</a>
+
+      {# Desktop navigation #}
       <nav class="top-bar__nav" aria-label="Main navigation">
-        <a href="{% url 'notes:notes_list' %}" class="nav-link">Notes</a>
-        <a href="{% url 'notes:about' %}" class="nav-link">About</a>
+        <a
+          href="{% url 'notes:index' %}"
+          class="nav-link{% if request.resolver_match.url_name == 'index' %} is-active{% endif %}"
+          {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}
+          >Home</a
+        >
+        <a
+          href="{% url 'notes:about' %}"
+          class="nav-link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}"
+          {% if request.resolver_match.url_name == 'about' %}aria-current="page"{% endif %}
+          >About</a
+        >
+        {% if user.is_authenticated %}
+          <a
+            href="{% url 'notes:notes_list' %}"
+            class="nav-link{% if request.resolver_match.url_name == 'notes_list' or request.resolver_match.url_name == 'note_create' or request.resolver_match.url_name == 'note_detail' %} is-active{% endif %}"
+            {% if request.resolver_match.url_name == 'notes_list' or request.resolver_match.url_name == 'note_create' or request.resolver_match.url_name == 'note_detail' %}aria-current="page"{% endif %}
+            >Notes</a
+          >
+        {% endif %}
         <a
           href="{% url 'admin:index' %}"
           class="nav-link"
           target="_blank"
           rel="noopener"
+          hidden
           >Admin</a
         >
       </nav>
+
+      {# Desktop auth actions #}
+      <div class="top-bar__actions">
+        {% if user.is_authenticated %}
+          <span class="top-bar__user">{{ user.username }}</span>
+          <form method="post" action="{% url 'logout' %}" class="top-bar__logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn--secondary btn--sm">Log out</button>
+          </form>
+        {% else %}
+          <a
+            href="{% url 'login' %}"
+            class="btn btn--secondary btn--sm{% if request.resolver_match.url_name == 'login' %} is-active{% endif %}"
+            {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}
+            >Log in</a
+          >
+          <a
+            href="{% url 'signup' %}"
+            class="btn btn--primary btn--sm{% if request.resolver_match.url_name == 'signup' %} is-active{% endif %}"
+            {% if request.resolver_match.url_name == 'signup' %}aria-current="page"{% endif %}
+            >Sign up</a
+          >
+        {% endif %}
+      </div>
+
+      <button
+        class="burger"
+        aria-label="Toggle menu"
+        aria-controls="mobile-drawer"
+        aria-expanded="false"
+        id="burger-btn"
+        type="button"
+      >
+        <span class="burger__line"></span>
+        <span class="burger__line"></span>
+        <span class="burger__line"></span>
+      </button>
     </header>
+
+    {# Mobile drawer #}
+    <aside class="drawer" id="mobile-drawer" aria-hidden="true">
+      <div class="drawer__backdrop" id="drawer-backdrop"></div>
+      <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+        <div class="drawer__header">
+          <a href="{% url 'notes:index' %}" class="drawer__brand">Jotter</a>
+          <button
+            class="drawer__close"
+            id="drawer-close"
+            type="button"
+            aria-label="Close menu"
+          >
+            <span class="drawer__close-line"></span>
+            <span class="drawer__close-line"></span>
+          </button>
+        </div>
+
+        <nav class="drawer__nav" aria-label="Mobile navigation">
+          <a
+            href="{% url 'notes:index' %}"
+            class="drawer__link{% if request.resolver_match.url_name == 'index' %} is-active{% endif %}"
+            {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}
+            >Home</a
+          >
+          <a
+            href="{% url 'notes:about' %}"
+            class="drawer__link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}"
+            {% if request.resolver_match.url_name == 'about' %}aria-current="page"{% endif %}
+            >About</a
+          >
+          {% if user.is_authenticated %}
+            <a
+              href="{% url 'notes:notes_list' %}"
+              class="drawer__link{% if request.resolver_match.url_name == 'notes_list' or request.resolver_match.url_name == 'note_create' or request.resolver_match.url_name == 'note_detail' %} is-active{% endif %}"
+              {% if request.resolver_match.url_name == 'notes_list' or request.resolver_match.url_name == 'note_create' or request.resolver_match.url_name == 'note_detail' %}aria-current="page"{% endif %}
+              >Notes</a
+            >
+          {% endif %}
+          <a
+            href="{% url 'admin:index' %}"
+            class="drawer__link"
+            target="_blank"
+            rel="noopener"
+            hidden
+            >Admin</a
+          >
+        </nav>
+        <hr class="drawer__divider" />
+        <div class="drawer__auth">
+          {% if user.is_authenticated %}
+            <span class="drawer__user">{{ user.username }}</span>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn--secondary btn--sm drawer__logout">
+                Log out
+              </button>
+            </form>
+          {% else %}
+            <a
+              href="{% url 'login' %}"
+              class="btn btn--secondary btn--sm drawer__auth-btn{% if request.resolver_match.url_name == 'login' %} is-active{% endif %}"
+              {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}
+              >Log in</a
+            >
+            <a
+              href="{% url 'signup' %}"
+              class="btn btn--primary btn--sm drawer__auth-btn{% if request.resolver_match.url_name == 'signup' %} is-active{% endif %}"
+              {% if request.resolver_match.url_name == 'signup' %}aria-current="page"{% endif %}
+              >Sign up</a
+            >
+          {% endif %}
+        </div>
+      </div>
+    </aside>
 
     <main id="main-content" class="main-content">
       {% block content %}{% endblock %}
@@ -45,6 +178,7 @@
 
     {% include "footer.html" %}
 
+    <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
   </body>
 </html>

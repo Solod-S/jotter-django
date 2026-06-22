@@ -121,6 +121,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# Auth
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'notes:notes_list'
+LOGOUT_REDIRECT_URL = 'notes:index'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

@@ -1,9 +1,42 @@
 /* ============================================================
-   About Page Styles — Jotter
+   About Page Styles - Jotter
    ============================================================ */
 
+.about-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+.about-intro {
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--border);
+}
+
+.about-intro__label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px var(--space-2);
+  margin-bottom: var(--space-4);
+  color: var(--primary);
+  background: var(--primary-muted);
+  border-radius: 4px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.about-intro .page-title {
+  max-width: 13ch;
+  margin-bottom: var(--space-3);
+}
+
+.about-intro .page-subtitle {
+  margin-bottom: 0;
+}
+
 .about-section {
-  margin-bottom: var(--space-8);
+  max-width: 42rem;
 }
 
 .about-section__heading {
@@ -17,10 +50,107 @@
   font-size: var(--text-base);
   color: var(--ink-secondary);
   line-height: 1.7;
-  max-width: 55ch;
-  margin-bottom: var(--space-4);
+  max-width: 60ch;
 }
 
-.about-section__text:last-child {
-  margin-bottom: 0;
+.about-principles {
+  padding-top: var(--space-2);
+}
+
+.about-principles__list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.about-principle {
+  display: grid;
+  grid-template-columns: minmax(10rem, 14rem) 1fr;
+  gap: var(--space-6);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-principle__title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.about-principle__text {
+  font-size: var(--text-sm);
+  color: var(--ink-secondary);
+  line-height: 1.7;
+}
+
+.about-workflow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.about-workflow .about-section__heading {
+  margin-bottom: var(--space-2);
+}
+
+.about-workflow__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-4);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background 150ms ease-out,
+    color 150ms ease-out;
+}
+
+.about-workflow__link:hover {
+  background: var(--surface);
+}
+
+.about-workflow__link:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+  .about-page {
+    gap: var(--space-8);
+  }
+
+  .about-intro {
+    padding-bottom: var(--space-6);
+  }
+
+  .about-intro .page-title {
+    max-width: none;
+  }
+
+  .about-principle {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-4) 0;
+  }
+
+  .about-workflow {
+    flex-direction: column;
+    padding: var(--space-5);
+  }
+
+  .about-workflow__link {
+    width: 100%;
+  }
 }
