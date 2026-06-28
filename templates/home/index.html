@@ -39,7 +39,20 @@
                     <h3 class="home-note__title">{{ note.title|default:"Untitled" }}</h3>
                     <span class="home-note__status">{{ note.get_status_display }}</span>
                   </div>
-                  <p class="home-note__preview">{{ note.content|truncatechars:160 }}</p>
+                  <p class="home-note__preview">{{ note.content|striptags|truncatechars:160 }}</p>
+                  {% if note.category or note.tags.exists %}
+                    <div class="home-note__meta">
+                      {% if note.category %}
+                      <span class="home-note__category">{{ note.category.name }}</span>
+                      {% endif %}
+                      {% for tag in note.tags.all|slice:":3" %}
+                        <span class="home-note__tag">{{ tag.name }}</span>
+                      {% endfor %}
+                      {% if note.tags.count > 3 %}
+                        <span class="home-note__tag">+{{ note.tags.count|add:"-3" }}</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
                 </a>
               </article>
             {% endfor %}

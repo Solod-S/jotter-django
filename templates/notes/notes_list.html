@@ -25,9 +25,12 @@
         </h2>
         <span class="note-card__date">{{ note.get_status_display }}</span>
       </div>
-      <p class="note-card__preview">{{ note.content|truncatechars:200 }}</p>
-      {% if note.tags.exists %}
+      <p class="note-card__preview">{{ note.content|striptags|truncatechars:200 }}</p>
+      {% if note.category or note.tags.exists %}
       <div class="note-card__meta">
+        {% if note.category %}
+        <span class="note-card__category">{{ note.category.name }}</span>
+        {% endif %}
         {% for tag in note.tags.all|slice:":3" %}
         <span class="note-card__tag">{{ tag.name }}</span>
         {% endfor %}

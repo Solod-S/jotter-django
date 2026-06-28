@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ note.title|default:"Untitled" }} — Jotter{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/note_detail.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <article class="note-detail">
+    <header class="note-detail__intro">
+      <a href="{% url 'notes:notes_list' %}" class="note-detail__back">&larr; Notes</a>
+      <p class="note-detail__label">Note</p>
+      <h1 class="note-detail__title{% if not note.title %} note-detail__title--untitled{% endif %}">
+        {{ note.title|default:"Untitled" }}
+      </h1>
+    </header>
+
+    <section class="note-detail__sidebar" aria-label="Note metadata">
+      <div class="note-detail__sidebar-item">
+        <span class="note-detail__sidebar-label">Status</span>
+        <span class="note-detail__sidebar-value">{{ note.get_status_display }}</span>
+      </div>
+
+      {% if note.category %}
+      <div class="note-detail__sidebar-item">
+        <span class="note-detail__sidebar-label">Category</span>
+        <span class="note-detail__sidebar-value">{{ note.category.name }}</span>
+      </div>
+      {% endif %}
+
+      {% if note.tags.exists %}
+      <div class="note-detail__sidebar-item">
+        <span class="note-detail__sidebar-label">Tags</span>
+        <div class="note-detail__tags">
+          {% for tag in note.tags.all %}
+          <span class="note-detail__tag">{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="note-detail__sidebar-item">
+        <span class="note-detail__sidebar-label">Updated</span>
+        <span class="note-detail__sidebar-value">{{ note.updated_at|date:"M j, Y" }}</span>
+      </div>
+    </section>
+
+    <section class="note-detail__body" aria-label="Note content">
+      <div class="note-detail__content">
+        {{ note.content|safe }}
+      </div>
+    </section>
+
+    <footer class="note-detail__footer">
+      <a href="{% url 'notes:note_edit' note.pk %}" class="btn btn--secondary btn--sm">Edit note</a>
+      <button type="button" class="btn btn--danger btn--sm">Delete</button>
+    </footer>
+  </article>
+{% endblock %}

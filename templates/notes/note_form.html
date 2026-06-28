@@ -1,0 +1,126 @@
+<!-- prettier-ignore -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if action == 'create' %}New note{% else %}Edit - {{ form.instance.title|default:"Untitled" }}{% endif %} - Jotter{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/note_editor.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="note-form">
+  <form method="post" novalidate class="note-form__form">
+    {% csrf_token %}
+
+    <header class="note-form__bar">
+      <a href="{% if action == 'edit' %}{% url 'notes:note_detail' form.instance.pk %}{% else %}{% url 'notes:notes_list' %}{% endif %}" class="note-form__back">&larr; Notes</a>
+      <div class="note-form__bar-actions">
+        <span class="note-form__mode">{% if action == 'create' %}New note{% else %}Editing{% endif %}</span>
+        <button type="submit" class="btn btn--primary btn--sm">
+          {% if action == 'create' %}Save note{% else %}Save changes{% endif %}
+        </button>
+      </div>
+    </header>
+
+    <section class="note-form__writing" aria-label="Note editor">
+      <div class="form-field">
+        {{ form.title }}
+        {% if form.title.errors %}
+          <ul class="form-field__errors">
+            {% for error in form.title.errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.content }}
+        <div class="html-editor" data-editor>
+          <div class="html-editor__toolbar" role="toolbar" aria-label="Text formatting">
+            <button type="button" class="html-editor__button" data-command="bold" aria-label="Bold"><strong>B</strong></button>
+            <button type="button" class="html-editor__button" data-command="italic" aria-label="Italic"><em>I</em></button>
+            <button type="button" class="html-editor__button" data-command="formatBlock" data-value="h2" aria-label="Heading">H2</button>
+            <button type="button" class="html-editor__button" data-command="formatBlock" data-value="blockquote" aria-label="Quote">&ldquo;</button>
+            <button type="button" class="html-editor__button" data-command="insertUnorderedList" aria-label="Bulleted list">&bull;</button>
+            <button type="button" class="html-editor__button" data-command="insertOrderedList" aria-label="Numbered list">1.</button>
+            <button type="button" class="html-editor__button" data-command="createLink" aria-label="Link">Link</button>
+            <button type="button" class="html-editor__button" data-command="removeFormat" aria-label="Clear formatting">Clear</button>
+          </div>
+          <div
+            class="html-editor__surface"
+            contenteditable="true"
+            role="textbox"
+            aria-label="Note content"
+            aria-multiline="true"
+            data-input-id="id_content"
+            data-placeholder="Start writing..."
+          ></div>
+        </div>
+        {% if form.content.errors %}
+          <ul class="form-field__errors">
+            {% for error in form.content.errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="note-form__details" aria-label="Note details">
+      <div class="note-form__details-header">
+        <h2 class="note-form__details-title">Details</h2>
+      </div>
+      <div class="note-form__meta">
+        <div class="form-field">
+          <label for="{{ form.category.id_for_label }}" class="form-field__label">Category</label>
+          {{ form.category }}
+          {% if form.category.field.queryset %}
+            <p class="form-field__help">Choose one category for this note.</p>
+          {% else %}
+            <p class="form-field__help">No categories yet.</p>
+          {% endif %}
+        </div>
+        <div class="form-field">
+          <label for="{{ form.tags.id_for_label }}" class="form-field__label">Tags</label>
+          <div class="tag-picker" data-tag-picker data-tags-url="{% url 'notes:tags_api' %}">
+            {{ form.tags }}
+            {{ form.new_tags }}
+            <div class="tag-picker__chips" data-tag-list aria-live="polite"></div>
+            <div class="tag-picker__combobox">
+              <input type="text" class="tag-picker__input" data-tag-entry placeholder="Search or create tag..." aria-label="Search or create tag" autocomplete="off" />
+              <div class="tag-picker__dropdown" data-tag-dropdown hidden>
+                <div class="tag-picker__state" data-tag-loading hidden>Loading tags...</div>
+                <div class="tag-picker__state" data-tag-empty hidden>No tags found</div>
+                <div class="tag-picker__state tag-picker__state--error" data-tag-error hidden>Couldn't load tags.</div>
+                <div class="tag-picker__options" data-tag-options></div>
+              </div>
+            </div>
+          </div>
+          {% if form.new_tags.errors %}
+            <ul class="form-field__errors">
+              {% for error in form.new_tags.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        <div class="form-field">
+          <label for="{{ form.status.id_for_label }}" class="form-field__label">Status</label>
+          <div class="status-control" data-status-control>
+            {{ form.status }}
+            <span class="status-control__badge" data-status-badge>Draft</span>
+          </div>
+          <p class="form-field__help" data-status-help>Draft notes stay private in your workspace.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="note-form__actions">
+      <a href="{% if action == 'edit' %}{% url 'notes:note_detail' form.instance.pk %}{% else %}{% url 'notes:notes_list' %}{% endif %}" class="btn btn--secondary">Cancel</a>
+      <button type="submit" class="btn btn--primary">
+        {% if action == 'create' %}Save note{% else %}Save changes{% endif %}
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
