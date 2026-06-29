@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete note - Jotter{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <section class="delete-confirm" aria-labelledby="delete-confirm-title">
+    <a href="{% url 'notes:note_detail' note.pk %}" class="delete-confirm__back">&larr; Back to note</a>
+
+    <div class="delete-confirm__body">
+      <p class="delete-confirm__label">Delete note</p>
+      <h1 class="delete-confirm__title" id="delete-confirm-title">
+        Delete "{{ note.title|default:"Untitled" }}"?
+      </h1>
+      <p class="delete-confirm__text">
+        This will remove the note from your workspace.
+      </p>
+
+      <form method="post" class="delete-confirm__actions">
+        {% csrf_token %}
+        <a href="{% url 'notes:note_detail' note.pk %}" class="btn btn--secondary">Cancel</a>
+        <button type="submit" class="btn btn--danger">Delete</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}

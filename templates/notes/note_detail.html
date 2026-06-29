@@ -55,7 +55,7 @@
 
     <footer class="note-detail__footer">
       <a href="{% url 'notes:note_edit' note.pk %}" class="btn btn--secondary btn--sm">Edit note</a>
-      <button type="button" class="btn btn--danger btn--sm">Delete</button>
+      <a href="{% url 'notes:note_delete' note.pk %}" class="btn btn--danger btn--sm">Delete</a>
     </footer>
   </article>
 {% endblock %}

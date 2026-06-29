@@ -80,6 +80,18 @@ def note_edit(request, pk):
 
 @login_required
 @require_http_methods(["GET", "POST"])
+def note_delete(request, pk):
+    note = get_object_or_404(Note, pk=pk, owner=request.user)
+
+    if request.method == "POST":
+        note.delete()
+        return redirect("notes:notes_list")
+
+    return render(request, "notes/note_confirm_delete.html", {"note": note})
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
 def tags_api(request):
     if request.method == "GET":
         tags = Tag.objects.filter(owner=request.user).order_by("name")
